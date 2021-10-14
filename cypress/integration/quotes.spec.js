@@ -56,8 +56,32 @@ describe('Quotes App', () => {
                 .type('Not Casey')
                 .should('have.value', 'Not Casey');
         })
+        
         // submit button is NOT disabled after typing in the inputs
+        it('the submit button enables when both inputs are filled out', () => {
+            authorInput().type('Casey');
+            textInput().type('CSS is fun!!!');
+            submitBtn().should('not.be.disabled');
+        })
+        
         // The cancel button works
+        it('the cancel button can reset the inputs and disable the submit button', () => {
+            authorInput().type('Casey');
+            textInput().type('CSS is lame!!');
+            cancelBtn().click();
+            authorInput().should('have.value', '');
+            textInput().should('have.value', '');
+            submitBtn().should('be.disabled');
+        })
+    })
 
+    describe('Adding a new quote', () => {
+        it('can submit and delete a new quote', () => {
+            textInput().type('JavaScript? More like LAME SCRIPT');
+            authorInput().type('Lorem Ipsum');
+            submitBtn().click();
+            cy.contains('Lorem Ipsum').siblings('button:nth-of-type(2)').click();
+            cy.contains('Lorem Ipsum').should('not.exist');
+        })
     })
 })
