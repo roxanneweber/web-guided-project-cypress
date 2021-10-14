@@ -22,4 +22,14 @@ describe('Quotes App', () => {
         expect({}).not.to.equal({}); // strict ===
         expect({}).to.eql({}); // not strict ==
     })
+
+    it('the proper elements are showing', () => {
+        textInput().should('exist');
+        foobarInput().should('not.exist');
+        authorInput().should('exist');
+        submitBtn().should('exist');
+        cancelBtn().should('exist');
+        cy.contains('Submit Quote').should('exist');
+        cy.contains(/submit quote/i).should('exist');
+    })
 })
