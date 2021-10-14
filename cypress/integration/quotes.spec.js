@@ -83,5 +83,33 @@ describe('Quotes App', () => {
             cy.contains('Lorem Ipsum').siblings('button:nth-of-type(2)').click();
             cy.contains('Lorem Ipsum').should('not.exist');
         })
+
+        it('variation of can submit a new quote', () => {
+            cy.contains('Lorem Ipsum').should('not.exist');
+            textInput().type('I love testing!');
+            authorInput().type('CRHarding');
+            submitBtn().click();
+            cy.contains(/crharding/i).should('exist');
+            cy.contains('CRHarding').next().next().click();
+            cy.contains('CRHarding').should('not.exist');
+        })
+    })
+
+    describe('Editing an existing quote', () => {
+        it('can edit a quote', () => {
+            textInput().type('blah');
+            authorInput().type('Casey');
+            submitBtn().click();
+            cy.contains('Casey').siblings('button:nth-of-type(1)').click();
+            authorInput().should('have.value', 'Casey');
+            textInput().should('have.value', 'blah');
+            textInput().type(' blah blah!');
+            authorInput().type(' Harding');
+            submitBtn().click();
+            cy.contains('blah blah blah! (Casey Harding)');
+            // ALWAYS REMOVE SIDE EFFECTS!!!!
+            cy.contains('Casey').next().next().click();
+            cy.contains('blah blah blah! (Casey Harding)').should('not.exist');
+        })
     })
 })
